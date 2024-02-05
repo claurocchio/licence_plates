@@ -83,6 +83,24 @@ public class MainTest {
     }
 
     @Test
+    public void getThreeLetterPlate_case2() {
+        int n = 10386995;
+
+        String nthPlate = sut.calculatePlate(n);
+
+        assertEquals("995ABA", nthPlate);
+    }
+
+    @Test
+    public void getPlateLevel_5_case1() {
+        int n = 192447340;
+
+        String nthPlate = sut.calculatePlate(n);
+
+        assertEquals("0ZZZZY", nthPlate);
+    }
+
+    @Test
     public void getPlateLevel_5_limit() {
         int n = 192447359;
 

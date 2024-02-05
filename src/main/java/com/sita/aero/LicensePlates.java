@@ -41,10 +41,13 @@ public class LicensePlates {
 
     /**
      * Store the corresponding calculated letters in the resultArray and return the remainder digits
+     * We use the previous calculated level to achieve this:
+     * Each level correspond to one letter added from right to left.
+     * i.e. a level = 5 means the Plate contains 1 digit and 5 letters.
      * @param n the received n index
-     * @param level the corresponding level
+     * @param level the corresponding level:
      * @param resultArray the array where the result is stored
-     * @return Remainder
+     * @return the final Remainder
      */
     public int setLetters(int n, int level, char[] resultArray) {
         int firstAlphanumericPlateIdx = Util.getBasePlateForLevel(level - 1);
@@ -59,16 +62,25 @@ public class LicensePlates {
         return remainder;
     }
 
-    private int calculateLetterForPosition(int pos, int level, int n, char[] resultArray) {
+    /**
+     * For each level, we find the corresponding letter, to do this we split the level in equals sections
+     * using the following formula: 10^numeric digits * 26^character digits
+     * @param pos the position in the license plate
+     * @param level the corresponding level
+     * @param remainder the remainder between the n and the base index of the level
+     * @param resultArray the array where the result is stored
+     * @return the numeric remainder for that position
+     */
+    private int calculateLetterForPosition(int pos, int level, int remainder, char[] resultArray) {
         int numericDigits = DIGITS - level;
         int alphaDigits = DIGITS - pos - 1;
 
         int sectionSize = (int) Math.pow(10, numericDigits) * (int) Math.pow(26, alphaDigits);
 
-        int division = n / sectionSize;
+        int division = remainder / sectionSize;
 
         resultArray[pos] = Util.getChar(division % 26);
 
-        return n - division * sectionSize;
+        return remainder - division * sectionSize;
     }
 }
